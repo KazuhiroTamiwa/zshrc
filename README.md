@@ -1,1 +1,2 @@
 # zshrc
+オレ流zshrc
