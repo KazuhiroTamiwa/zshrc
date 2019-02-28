@@ -1,23 +1,61 @@
-#vagrantのboxファイルの場所
+# vagrantのboxファイルの場所
 export VAGRANT_HOME=/Volumes/Transcend/vagrant/.vagrant.d
 export PATH=$VAGRANT_HOME:$PATH
 
-# rbenv設定
-[[ -d ~/.rbenv  ]] && \
-  export PATH=${HOME}/.rbenv/bin:${PATH} && \
-  eval "$(rbenv init -)"
+# anyenv
+if [ -d $HOME/.anyenv ] ; then
+    export PATH="$HOME/.anyenv/bin:$PATH"
+    eval "$(anyenv init -)"
+    # tmux対応
+    for D in `\ls $HOME/.anyenv/envs`
+    do
+        export PATH="$HOME/.anyenv/envs/$D/bin:$PATH"
+    done
+fi
 
-# pyenvの設定
-export PYENV_ROOT="${HOME}/.pyenv"
-export PATH=${PYENV_ROOT}/bin:$PATH
-eval "$(pyenv init -)"
-
+# memory解放
 alias remem='du -sx / &> /dev/null & sleep 25 && kill $!'
 
+# developにマージ済みのローカルブランチを全て削除
+alias gitbrm="git branch --merged develop | grep -vE '^\*|master$|develop$' | xargs -I % git branch -d %"
+
+# docker ps -a
+alias dps='docker ps -a'
+
+# php
+#export PATH="$(brew --prefix homebrew/php/php70)/bin:$PATH"
+#export PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"
+
+# phalcon
+export PTOOLSPATH=/Users/Kazuhiro/phalcon/phalcon-devtools/
+export PATH=$PATH:/Users/Kazuhiro/phalcon/phalcon-devtools
+
 # java version change
+alias java1.6='export JAVA_HOME=`/usr/libexec/java_home -v 1.6.0`'
 alias java1.7='export JAVA_HOME=`/usr/libexec/java_home -v 1.7.0`'
 alias java1.8='export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0`'
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0`
+
+# Golangの設定
+export GOROOT=/usr/local/opt/go/libexec
+export GOPATH=$HOME/golang
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+
+# Rustの設定
+export PATH="$HOME/.multirust/toolchains/1.7.0/cargo/bin:$PATH"
+export RUST_SRC_PATH="$HOME/.multirust/toolchains/1.7.0/src"
+
+# python
+export PYTHONPATH=~/xgboost/python-package
+
+# nodebrew
+export PATH=$HOME/.nodebrew/current/bin:$PATH
+
+# android
+export PATH=$PATH:/Users/Kazuhiro/Library/Android/sdk/platform-tools
+
+# コマンドラインからvscodeを実行する
+vscode () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
 
 ##### zsh settings #####
 ##セットした場合、ファイル名の補間に失敗してもエラーとせずコマンドを起動する
@@ -90,3 +128,19 @@ zstyle ':completion:*:kill:*' list-colors \
 export LANG=ja_JP.UTF-8
 setopt print_eight_bit   # 日本語ファイル名を表示可能にする
 setopt no_flow_control   # フローコントロールを無効にする
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+export PATH="/usr/local/opt/apr/bin:$PATH"
+export PATH="/usr/local/opt/apr-util/bin:$PATH"
+export PATH="/usr/local/opt/qt5/bin:$PATH"
+export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/Kazuhiro/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/Kazuhiro/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/Kazuhiro/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/Kazuhiro/google-cloud-sdk/completion.zsh.inc'; fi
+
+# gooleapp engine
+export PATH="$HOME/google-cloud-sdk/platform/google_appengine:$PATH"
